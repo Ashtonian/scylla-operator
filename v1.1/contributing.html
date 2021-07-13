@@ -1,0 +1,433 @@
+
+
+
+<!doctype html>
+<html class="no-js" lang="en">
+  
+<head><!-- begin head.html -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+    Contributing to Scylla Operator | Scylla Docs
+    </title>
+    <meta name="description" content="Scylla is an Apache Cassandra-compatible NoSQL data store that can handle 1 million transactions per second on a single server."/>
+
+    <link rel="icon" href="_static/img/favicon.ico" type="image/x-icon"/>
+    <link rel="canonical" href="https://docs.scylladb.com/">
+    <link rel="author" href="mailto:info@scylladb.com">
+    <link rel="stylesheet" href="_static/" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/tabs.css" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/doc/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/v4-shims.css"/>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+
+    <script src="_static/js/vendor/modernizr.js"></script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T8P2JP');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Marketo -->
+    <script type="text/javascript"> (function() { var didInit = false; function initMunchkin() { if(didInit === false) { didInit = true; Munchkin.init('791-QBF-350'); } } var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//munchkin.marketo.net/munchkin.js'; s.onreadystatechange = function() { if (this.readyState == 'complete' || this.readyState == 'loaded') { initMunchkin(); } }; s.onload = initMunchkin; document.getElementsByTagName('head')[0].appendChild(s); })(); </script>
+    <!-- End Marketo -->
+
+<!-- end head.html -->
+</head>
+
+<body>
+
+
+
+<header id="header" class="animated">
+    <div class="topbar_continer contain-to-grid clearfix">
+        <nav class="top-bar" id="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <div class="logo">
+                        <a href="https://docs.scylladb.com/"><img src="_static/img/logo-scylla-docs.svg" alt="" width="151"></a>
+                    </div>
+                </li>
+                <li class="toggle-topbar"><a href="#"><span class="icon-manu"></span></a></li>
+            </ul>
+            <section class="top-bar-section clearfix">
+                <ul class="right">
+                    
+                    <li>
+                        <a href="https://scylladb.github.io/scylla-operator/">Scylla Operator</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://docs.scylladb.com/scylla-cloud/">Scylla Cloud</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://university.scylladb.com/">Scylla University</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.scylladb.com/">ScyllaDB Home</a>
+                    </li>
+                    
+                    <li class="search_continer show-for-medium-up">	
+                        <ci-search></ci-search>	
+                    </li>	
+                </ul>
+            </section>
+        </nav>
+    </div>
+</header>
+<section id="content">
+    <div class="row">
+	
+	<div class="large-6 large-push-3 columns">
+
+        
+        <div class="admonition caution">
+            <p class="admonition-title">Caution</p>
+            
+            You are not reading the most current version of the documentation.
+            
+            If you want up-to-date information, please have a look at 
+            <a href="../stable/contributing.html">
+                
+                    v1.3
+                        
+            </a>.
+        </div>
+        
+
+        <section id="contributing-to-scylla-operator">
+<h1>Contributing to Scylla Operator<a class="headerlink" href="#contributing-to-scylla-operator" title="Permalink to this headline">¶</a></h1>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>To develop on scylla-operator, your environment must have the following:</p>
+<ol class="simple">
+<li><p><a class="reference external" href="https://golang.org/dl/">Go 1.13</a></p>
+<ul class="simple">
+<li><p>Make sure <a class="reference external" href="https://github.com/golang/go/wiki/SettingGOPATH">GOPATH</a> is set to <code class="docutils literal notranslate"><span class="pre">GOPATH=$HOME/go</span></code>.</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://github.com/kubernetes-sigs/kustomize/releases/tag/v3.1.0">Kustomize v3.1.0</a></p></li>
+<li><p><a class="reference external" href="https://github.com/kubernetes-sigs/kubebuilder/releases/tag/v2.3.1">kubebuilder v2.3.1</a></p></li>
+<li><p><a class="reference external" href="https://docs.docker.com/install/">Docker</a></p></li>
+<li><p>Git client installed</p></li>
+<li><p>Github account</p></li>
+</ol>
+<p>To install all dependencies (Go, kustomize, kubebuilder, dep), simply run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./install-dependencies.sh
+</pre></div>
+</div>
+</section>
+<section id="initial-setup">
+<h2>Initial Setup<a class="headerlink" href="#initial-setup" title="Permalink to this headline">¶</a></h2>
+<section id="create-a-fork">
+<h3>Create a Fork<a class="headerlink" href="#create-a-fork" title="Permalink to this headline">¶</a></h3>
+<p>From your browser navigate to <a class="reference external" href="http://github.com/scylladb/scylla-operator">http://github.com/scylladb/scylla-operator</a> and click the “Fork” button.</p>
+</section>
+<section id="clone-your-fork">
+<h3>Clone Your Fork<a class="headerlink" href="#clone-your-fork" title="Permalink to this headline">¶</a></h3>
+<p>Open a console window and do the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the scylla operator repo path</span>
+mkdir -p <span class="nv">$GOPATH</span>/src/github.com/scylladb
+
+<span class="c1"># Navigate to the local repo path and clone your fork</span>
+<span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/scylladb
+
+<span class="c1"># Clone your fork, where &lt;user&gt; is your GitHub account name</span>
+git clone https://github.com/&lt;user&gt;/scylla-operator.git
+</pre></div>
+</div>
+</section>
+<section id="add-upstream-remote">
+<h3>Add Upstream Remote<a class="headerlink" href="#add-upstream-remote" title="Permalink to this headline">¶</a></h3>
+<p>First you will need to add the upstream remote to your local git:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add &#39;upstream&#39; to the list of remotes</span>
+git remote add upstream https://github.com/scylladb/scylla-operator.git
+
+<span class="c1"># Verify the remote was added</span>
+git remote -v
+</pre></div>
+</div>
+<p>Now you should have at least <code class="docutils literal notranslate"><span class="pre">origin</span></code> and <code class="docutils literal notranslate"><span class="pre">upstream</span></code> remotes. You can also add other remotes to collaborate with other contributors.</p>
+</section>
+</section>
+<section id="development">
+<h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
+<p>To add a feature or to make a bug fix, you will need to create a branch in your fork and then submit a pull request (PR) from the branch.</p>
+<section id="building-the-project">
+<h3>Building the project<a class="headerlink" href="#building-the-project" title="Permalink to this headline">¶</a></h3>
+<p>You can build the project using the Makefile commands:</p>
+<ul class="simple">
+<li><p>Open the Makefile and change the <code class="docutils literal notranslate"><span class="pre">IMG</span></code> environment variable to a repository you have access to.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docker-push</span></code> and wait for the image to be built and uploaded in your repo.</p></li>
+</ul>
+</section>
+<section id="create-a-branch">
+<h3>Create a Branch<a class="headerlink" href="#create-a-branch" title="Permalink to this headline">¶</a></h3>
+<p>From a console, create a new branch based on your fork and start working on it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ensure all your remotes are up to date with the latest</span>
+git fetch --all
+
+<span class="c1"># Create a new branch that is based off upstream master.  Give it a simple, but descriptive name.</span>
+<span class="c1"># Generally it will be two to three words separated by dashes and without numbers.</span>
+git checkout -b feature-name upstream/master
+</pre></div>
+</div>
+<p>Now you are ready to make the changes and commit to your branch.</p>
+</section>
+<section id="updating-your-fork">
+<h3>Updating Your Fork<a class="headerlink" href="#updating-your-fork" title="Permalink to this headline">¶</a></h3>
+<p>During the development lifecycle, you will need to keep up-to-date with the latest upstream master. As others on the team push changes, you will need to <code class="docutils literal notranslate"><span class="pre">rebase</span></code> your commits on top of the latest. This avoids unnecessary merge commits and keeps the commit history clean.</p>
+<p>Whenever you need to update your local repository, you never want to merge. You <strong>always</strong> will rebase. Otherwise you will end up with merge commits in the git history. If you have any modified files, you will first have to stash them (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">save</span> <span class="pre">-u</span> <span class="pre">&quot;&lt;some</span> <span class="pre">description&gt;&quot;</span></code>).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git fetch --all
+git rebase upstream/master
+</pre></div>
+</div>
+<p>Rebasing is a very powerful feature of Git. You need to understand how it works or else you will risk losing your work. Read about it in the <a class="reference external" href="https://git-scm.com/docs/git-rebase">Git documentation</a>, it will be well worth it. In a nutshell, rebasing does the following:</p>
+<ul class="simple">
+<li><p>“Unwinds” your local commits. Your local commits are removed temporarily from the history.</p></li>
+<li><p>The latest changes from upstream are added to the history</p></li>
+<li><p>Your local commits are re-applied one by one</p></li>
+<li><p>If there are merge conflicts, you will be prompted to fix them before continuing. Read the output closely. It will tell you how to complete the rebase.</p></li>
+<li><p>When done rebasing, you will see all of your commits in the history.</p></li>
+</ul>
+</section>
+</section>
+<section id="submitting-a-pull-request">
+<h2>Submitting a Pull Request<a class="headerlink" href="#submitting-a-pull-request" title="Permalink to this headline">¶</a></h2>
+<p>Once you have implemented the feature or bug fix in your branch, you will open a PR to the upstream repo. Before opening the PR ensure you have added unit tests, are passing the integration tests, cleaned your commit history, and have rebased on the latest upstream.</p>
+<p>In order to open a pull request (PR) it is required to be up to date with the latest changes upstream. If other commits are pushed upstream before your PR is merged, you will also need to rebase again before it will be merged.</p>
+<section id="commit-history">
+<h3>Commit History<a class="headerlink" href="#commit-history" title="Permalink to this headline">¶</a></h3>
+<p>To prepare your branch to open a PR, you will need to have the minimal number of logical commits so we can maintain
+a clean commit history. Most commonly a PR will include a single commit where all changes are squashed, although
+sometimes there will be multiple logical commits.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inspect your commit history to determine if you need to squash commits</span>
+git log
+
+<span class="c1"># Rebase the commits and edit, squash, or even reorder them as you determine will keep the history clean.</span>
+<span class="c1"># In this example, the last 5 commits will be opened in the git rebase tool.</span>
+git rebase -i HEAD~5
+</pre></div>
+</div>
+<p>Once your commit history is clean, ensure you have based on the <a class="reference external" href="#updating-your-fork">latest upstream</a> before you open the PR.</p>
+</section>
+<section id="commit-messages">
+<h3>Commit messages<a class="headerlink" href="#commit-messages" title="Permalink to this headline">¶</a></h3>
+<p>Please make the first line of your commit message a summary of the change that a user (not a developer) of Operator would like to read,
+and prefix it with the most relevant directory of the change followed by a colon.
+The changelog gets made by looking at just these first lines so make it good!</p>
+<p>If you have more to say about the commit, then enter a blank line and carry on the description.
+Remember to say why the change was needed - the commit itself shows what was changed.</p>
+<p>Writing more is better than less. Comparing the behaviour before the change to that after the change is very useful.
+Imagine you are writing to yourself in 12 months time when you’ve forgotten everything about what you just did, and you need to get up to speed quickly.</p>
+<p>If the change fixes an issue then write Fixes #1234 in the commit message.
+This can be on the subject line if it will fit. If you don’t want to close the associated issue just put #1234 and the change will get linked into the issue.</p>
+<p>Here is an example of a short commit message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sidecar</span><span class="p">:</span> <span class="n">log</span> <span class="n">on</span> <span class="n">reconcile</span> <span class="n">loop</span> <span class="o">-</span> <span class="n">fixes</span> <span class="c1">#1234</span>
+</pre></div>
+</div>
+<p>And here is an example of a longer one:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">api</span><span class="p">:</span> <span class="n">now</span> <span class="n">supports</span> <span class="n">host</span> <span class="n">networking</span> <span class="p">(</span><span class="c1">#1234)</span>
+
+<span class="n">The</span> <span class="n">operator</span> <span class="n">CRD</span> <span class="n">now</span> <span class="n">has</span> <span class="n">a</span> <span class="s2">&quot;network&quot;</span> <span class="nb">property</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="n">to</span>
+<span class="n">select</span> <span class="n">host</span> <span class="n">networking</span> <span class="k">as</span> <span class="n">well</span> <span class="k">as</span> <span class="n">setting</span> <span class="n">the</span> <span class="n">apropriate</span> <span class="n">DNS</span> <span class="n">policy</span><span class="o">.</span>
+
+<span class="n">Fixes</span> <span class="c1">#1234</span>
+</pre></div>
+</div>
+</section>
+<section id="submitting">
+<h3>Submitting<a class="headerlink" href="#submitting" title="Permalink to this headline">¶</a></h3>
+<p>Go to the <a class="reference external" href="https://www.github.com/scylladb/scylla-operator">Scylla Operator github</a> to open the PR. If you have pushed recently, you should see an obvious link to open the PR. If you have not pushed recently, go to the Pull Request tab and select your fork and branch for the PR.</p>
+<p>After the PR is open, you can make changes simply by pushing new commits. Your PR will track the changes in your fork and update automatically.</p>
+</section>
+</section>
+</section>
+
+        </div>
+
+        <div id="sidebar" class="large-3 large-pull-6 columns"><div class="side-nav">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="generic.html">Deploying Scylla on a Kubernetes Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eks.html">Deploying Scylla on EKS (experimental)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gke.html">Deploying Scylla on GKE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helm.html">Deploying Scylla stack using Helm Charts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manager.html">Deploying Scylla Manager on a Kubernetes Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Setting up Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="node_operations.html">Node operations using Scylla Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade of Scylla Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scylla_cluster_crd.html">Scylla Cluster CRD</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing to Scylla Operator</a></li>
+</ul>
+
+</div>
+        </div>
+
+        <div class="large-3 columns">
+            
+                <div class="scylla-dropdown ">
+    <a href="#" data-options="align:bottom" data-dropdown="drop-versions" class="scylla-dropdown__button">
+        
+            v1.1
+        
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </a>
+    <ul id="drop-versions" class="f-dropdown scylla-dropdown__content" data-dropdown-content>
+            
+              <li><a href="../stable/contributing.html">v1.3</a></li>
+            
+            
+              <li><a href="../v1.2/contributing.html">v1.2</a></li>
+            
+            
+              <li><a href="contributing.html">v1.1</a></li>
+            
+            
+              <li><a href="../v1.0/contributing.html">v1.0</a></li>
+            
+            
+              <li><a href="../v0.3/contributing.html">v0.3</a></li>
+            
+            
+    </ul>
+</div>
+            
+        </div>
+
+    </div>
+</section>
+
+<!-- newsleter modal -->
+
+<div id="newsletter_signup" class="reveal-modal tiny radius dark_modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <a class="close-reveal-modal" aria-label="Close">×</a>
+    <h2 id="modalTitle">Sign up for the Scylla newsletter</h2>
+    <div id="mc_embed_signup">
+        <form action="//cloudius-systems.us10.list-manage.com/subscribe/post?u=df8bb543c68230d5f7b4dcf78&amp;id=9a4589f144" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
+            <div id="mc_embed_signup_scroll">
+
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-EMAIL">Email</label></div>
+                        <div class="small-9 columns"><input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL"></div>
+                    </div>
+                </div>
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-FNAME">First Name </label></div>
+                        <div class="small-9 columns"><input type="text" value="" name="FNAME" class="" id="mce-FNAME"></div>
+                    </div>
+                </div>
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-LNAME">Last Name </label></div>
+                        <div class="small-9 columns"><input type="text" value="" name="LNAME" class="" id="mce-LNAME"></div>
+                    </div>
+                </div>
+                <div id="mce-responses" class="clear">
+                    <div class="response" id="mce-error-response" style="display:none"></div>
+                    <div class="response" id="mce-success-response" style="display:none"></div>
+                </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <div style="position: absolute; left: -5000px;"><input type="text" name="b_df8bb543c68230d5f7b4dcf78_9a4589f144" tabindex="-1" value=""></div>
+                <div class="clear"><input type="submit" class="button" value="Sign up" name="subscribe" id="mc-embedded-subscribe"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- end newsleter modal -->
+
+
+
+<!-- footer.html -->
+<footer id="footer">
+    <div class="footer-top">
+        <a class="logo" href="https://www.scylladb.com"><img src="_static/img/logo-scylla-horizontal-RGB.svg" alt=""></a>
+        <div class="footer-links">
+            <a class="link" href="https://docs.scylladb.com">Docs</a>
+            <a class="link" href="https://www.scylladb.com/company/contact-us/">Contact Us</a>
+            <a class="link" href="https://www.scylladb.com/company/">About Us</a>
+          <div class="scylla-dropdown">
+    <a href="#" data-options="align:top" data-dropdown="drop-contribute" class="scylla-dropdown__button">
+        Contribute 
+        <i class="fa fa-github" aria-hidden="true"></i>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </a>
+    <ul id="drop-contribute" class="f-dropdown scylla-dropdown__content" data-dropdown-content>
+        <li><a href="https://github.com/scylladb/scylla-operator/issues/new?title=Issue in page Contributing to Scylla Operator&&body=I%20would%20like%20to%20report%20an%20issue%20in%20page%20https://operator.docs.scylladb.com/v1.1/contributing%0A%0A%23%23%23%20Problem%0A%0A%23%23%23%20%20Suggest%20a%20fix" target="_blank">Report a doc issue <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+        <li><a href="https://docs.scylladb.com/contribute/" target="_blank">Learn how to contribute <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+    </ul>
+</div>
+        </div>
+        <div class="footer-actions">
+            <a class="link-icon" href="https://github.com/ScyllaDB" target="_blank">
+                <span class="icon-github2"></span></a>
+            <a class="link-icon" href="https://twitter.com/ScyllaDB" target="_blank">
+                <span class="icon-twitter"></span></a>
+            <a class="link-icon" href="https://www.linkedin.com/company/scylladb"  target="_blank">
+                <span class="icon-linkedin2"></span></a>
+            <a class="link-icon" href="https://www.facebook.com/scylladb/" target="_blank">
+                <span class="icon-facebook"></span></a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="footer-info">
+            <div class="footer-copyright">
+                &#169; 2021, ScyllaDB. All rights reserved.
+            </div>
+            <div class="footer-last-updated">
+                Last updated on 13 July 2021.
+            </div>
+            <div class="footer-version">
+                Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+                &amp; <a href="https://sphinx-theme.scylladb.com">ScyllaDB Theme 0.1.25</a>
+            </div>
+        </div>
+        <div class="footer-links">
+        </div>
+    </div>
+</footer>
+<!-- end footer.html -->
+
+<!-- bodyscripts.html -->
+<!-- at the end of the BODY --> 
+<script src="_static/js/vendor/jquery.js"></script>
+<script src="_static/js/vendor/jquery.cookie.min.js"></script>
+<script src="_static/expertrec.js"></script>
+<script src="_static/js/foundation/foundation.js"></script>
+<script src="_static/js/foundation/foundation.topbar.js"></script>
+<script src="_static/js/foundation/foundation.dropdown.js"></script>
+<script src="_static/app.js"></script>
+<script>
+    $(document).foundation();
+</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T8P2JP"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <!-- end bodyscripts.html -->
+</body>
+</html>

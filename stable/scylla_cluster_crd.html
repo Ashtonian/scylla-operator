@@ -1,0 +1,490 @@
+
+
+
+<!doctype html>
+<html class="no-js" lang="en">
+  
+<head><!-- begin head.html -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+    Scylla Cluster CRD | Scylla Docs
+    </title>
+    <meta name="description" content="Scylla is an Apache Cassandra-compatible NoSQL data store that can handle 1 million transactions per second on a single server."/>
+
+    <link rel="icon" href="_static/img/favicon.ico" type="image/x-icon"/>
+    <link rel="canonical" href="https://docs.scylladb.com/">
+    <link rel="author" href="mailto:info@scylladb.com">
+    <link rel="stylesheet" href="_static/" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/tabs.css" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/doc/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/v4-shims.css"/>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+
+    <script src="_static/js/vendor/modernizr.js"></script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T8P2JP');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Marketo -->
+    <script type="text/javascript"> (function() { var didInit = false; function initMunchkin() { if(didInit === false) { didInit = true; Munchkin.init('791-QBF-350'); } } var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//munchkin.marketo.net/munchkin.js'; s.onreadystatechange = function() { if (this.readyState == 'complete' || this.readyState == 'loaded') { initMunchkin(); } }; s.onload = initMunchkin; document.getElementsByTagName('head')[0].appendChild(s); })(); </script>
+    <!-- End Marketo -->
+
+<!-- end head.html -->
+</head>
+
+<body>
+
+
+
+<header id="header" class="animated">
+    <div class="topbar_continer contain-to-grid clearfix">
+        <nav class="top-bar" id="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <div class="logo">
+                        <a href="https://docs.scylladb.com/"><img src="_static/img/logo-scylla-docs.svg" alt="" width="151"></a>
+                    </div>
+                </li>
+                <li class="toggle-topbar"><a href="#"><span class="icon-manu"></span></a></li>
+            </ul>
+            <section class="top-bar-section clearfix">
+                <ul class="right">
+                    
+                    <li>
+                        <a href="https://scylladb.github.io/scylla-operator/">Scylla Operator</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://docs.scylladb.com/scylla-cloud/">Scylla Cloud</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://university.scylladb.com/">Scylla University</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.scylladb.com/">ScyllaDB Home</a>
+                    </li>
+                    
+                    <li class="search_continer show-for-medium-up">	
+                        <ci-search></ci-search>	
+                    </li>	
+                </ul>
+            </section>
+        </nav>
+    </div>
+</header>
+<section id="content">
+    <div class="row">
+	
+	<div class="large-6 large-push-3 columns">
+
+        
+
+        <section id="scylla-cluster-crd">
+<h1>Scylla Cluster CRD<a class="headerlink" href="#scylla-cluster-crd" title="Permalink to this headline">¶</a></h1>
+<p>Scylla database clusters can be created and configuring using the <code class="docutils literal notranslate"><span class="pre">clusters.scylla.scylladb.com</span></code> custom resource definition (CRD).</p>
+<p>Please refer to the the <a class="reference internal" href="generic.html"><span class="doc">user guide walk-through</span></a> for deployment instructions.
+This page will explain all the available configuration options on the Scylla CRD.</p>
+<section id="sample">
+<h2>Sample<a class="headerlink" href="#sample" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scylla.scylladb.com/v1</span>
+<span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ScyllaCluster</span>
+<span class="l l-Scalar l-Scalar-Plain">metadata</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">simple-cluster</span>
+  <span class="l l-Scalar l-Scalar-Plain">namespace</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scylla</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">2.3.1</span>
+  <span class="l l-Scalar l-Scalar-Plain">repository</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scylladb/scylla</span>
+  <span class="l l-Scalar l-Scalar-Plain">developerMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="l l-Scalar l-Scalar-Plain">cpuset</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">automaticOrphanedNodeCleanup</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="l l-Scalar l-Scalar-Plain">repairs</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;weekly</span><span class="nv"> </span><span class="s">us-east-1</span><span class="nv"> </span><span class="s">repair&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">intensity</span><span class="p p-Indicator">:</span> <span class="s">&quot;2&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">interval</span><span class="p p-Indicator">:</span> <span class="s">&quot;7d&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">dc</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;us-east-1&quot;</span><span class="p p-Indicator">]</span>
+  <span class="l l-Scalar l-Scalar-Plain">backups</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;daily</span><span class="nv"> </span><span class="s">users</span><span class="nv"> </span><span class="s">backup&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">rateLimit</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
+    <span class="l l-Scalar l-Scalar-Plain">location</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;s3:cluster-backups&quot;</span><span class="p p-Indicator">]</span>
+    <span class="l l-Scalar l-Scalar-Plain">interval</span><span class="p p-Indicator">:</span> <span class="s">&quot;1d&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">keyspace</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;users&quot;</span><span class="p p-Indicator">]</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;weekly</span><span class="nv"> </span><span class="s">full</span><span class="nv"> </span><span class="s">cluster</span><span class="nv"> </span><span class="s">backup&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">rateLimit</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
+    <span class="l l-Scalar l-Scalar-Plain">location</span><span class="p p-Indicator">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;s3:cluster-backups&quot;</span><span class="p p-Indicator">]</span>
+    <span class="l l-Scalar l-Scalar-Plain">interval</span><span class="p p-Indicator">:</span> <span class="s">&quot;7d&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">datacenter</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">us-east-1</span>
+    <span class="l l-Scalar l-Scalar-Plain">racks</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">us-east-1a</span>
+        <span class="l l-Scalar l-Scalar-Plain">members</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+        <span class="l l-Scalar l-Scalar-Plain">storage</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">capacity</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">500G</span>
+          <span class="l l-Scalar l-Scalar-Plain">storageClassName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">local-raid-disks</span>
+        <span class="l l-Scalar l-Scalar-Plain">resources</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">requests</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">cpu</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
+            <span class="l l-Scalar l-Scalar-Plain">memory</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">32Gi</span>
+          <span class="l l-Scalar l-Scalar-Plain">limits</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">cpu</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">8</span>
+            <span class="l l-Scalar l-Scalar-Plain">memory</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">32Gi</span>
+        <span class="l l-Scalar l-Scalar-Plain">placement</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">nodeAffinity</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p p-Indicator">:</span>
+              <span class="l l-Scalar l-Scalar-Plain">nodeSelectorTerms</span><span class="p p-Indicator">:</span>
+                <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">matchExpressions</span><span class="p p-Indicator">:</span>
+                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">failure-domain.beta.kubernetes.io/region</span>
+                    <span class="l l-Scalar l-Scalar-Plain">operator</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">In</span>
+                    <span class="l l-Scalar l-Scalar-Plain">values</span><span class="p p-Indicator">:</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">us-east-1</span>
+                  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">failure-domain.beta.kubernetes.io/zone</span>
+                    <span class="l l-Scalar l-Scalar-Plain">operator</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">In</span>
+                    <span class="l l-Scalar l-Scalar-Plain">values</span><span class="p p-Indicator">:</span>
+                      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">us-east-1a</span>
+          <span class="l l-Scalar l-Scalar-Plain">tolerations</span><span class="p p-Indicator">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">role</span>
+              <span class="l l-Scalar l-Scalar-Plain">operator</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Equal</span>
+              <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scylla-clusters</span>
+              <span class="l l-Scalar l-Scalar-Plain">effect</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">NoSchedule</span>
+</pre></div>
+</div>
+</section>
+<section id="settings-explanation">
+<h2>Settings Explanation<a class="headerlink" href="#settings-explanation" title="Permalink to this headline">¶</a></h2>
+<section id="cluster-settings">
+<h3>Cluster Settings<a class="headerlink" href="#cluster-settings" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">version</span></code>: The version of Scylla to use. It is used as the image tag to pull.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">agentVersion</span></code>: The version of Scylla Manager Agent to use. It is used as the image tag to pull.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">repository</span></code>: Optional field. Specifies a custom image repo. If left unset, the official docker hub repo is used (scylladb/scylla).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">agentRepository</span></code>: Optional field. Specifies a custom Scylla Manager Agent image repo. If left unset, the official docker hub repo is used (scylladb/scylla).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">developerMode</span></code>: Optional field. If it’s true, then Scylla is started in <a class="reference external" href="https://www.scylladb.com/2016/09/13/test-dev-env/">developer mode</a>. This setting is for shared test/dev environments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cpuset</span></code>: Optional field. If it’s true, then the operator will start Scylla with cpu pinning for maximum performance. For this to work, you need to set the kubelet to use the <a class="reference external" href="https://kubernetes.io/blog/2018/07/24/feature-highlight-cpu-manager/">static cpu policy</a> and only specify limits in resources.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">automaticOrphanedNodeCleanup</span></code>: Optional field. Controls if automatic orphan node cleanup should be performed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alternator</span></code>: Optional field. Defines Alternator configuration.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">port</span></code>: Port on which to bind to Alternator API.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">writeIsolation</span></code>: <em>required</em> Desired write isolation.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">genericUpgrade</span></code>: Optional field. Defines GenericUpgrade configuration.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">failureStrategy</span></code>: specifies which logic is executed when upgrade failure happens. Currently only <code class="docutils literal notranslate"><span class="pre">Retry</span></code> is supported.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pollInterval</span></code>: specifies how often upgrade logic polls on state updates.
+Increasing this value should lower number of requests sent to the kube-apiserver, but it may affect
+overall time spent during upgrade.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datacenter</span></code>: Datacenter definition.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sysctls</span></code>: Optional field. Sysctl properties to be applied during initialization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scyllaArgs</span></code>: Optional field. Command line argument passed to Scylla container image. Note: not all Scylla versions support it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">network</span></code>: Optional field. Allows to customize network parameters.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostNetworking</span></code>: controls if host networking should be enabled.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dnsPolicy</span></code>: controls Scylla Pod DNS Policy. See <a class="reference external" href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy">details</a>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">repairs</span></code>: Optional field. Repair tasks definitions. See <code class="docutils literal notranslate"><span class="pre">Scylla</span> <span class="pre">Manager</span> <span class="pre">settings</span></code> for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">backups</span></code>: Optional field. Repair tasks definitions. See <code class="docutils literal notranslate"><span class="pre">Scylla</span> <span class="pre">Manager</span> <span class="pre">settings</span></code> for details.</p></li>
+</ul>
+<p>In the Scylla model, each cluster contains datacenters and each datacenter contains racks. At the moment, the operator only supports single datacenter setups.</p>
+</section>
+<section id="scylla-manager-settings">
+<h3>Scylla Manager settings<a class="headerlink" href="#scylla-manager-settings" title="Permalink to this headline">¶</a></h3>
+<p>Tasks are scheduled only when Scylla Manager is deployed in K8s cluster.</p>
+<p>Repairs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> - <strong>required</strong> - human readable name of the task. It must be unique across all tasks.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">startDate</span></code> - specifies the task start date expressed in the RFC3339 format or <code class="docutils literal notranslate"><span class="pre">now[+duration]</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">now+3d2h10m</span></code>,
+valid units are d, h, m, s (default “now”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interval</span></code> - Optional field. Task schedule interval e.g. <code class="docutils literal notranslate"><span class="pre">3d2h10m</span></code>, valid units are d, h, m, s (default “0”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numRetries</span></code> - Optional field. The number of times a scheduled task will retry to run before failing (default 3).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dc</span></code> - Optional field. A list of datacenter glob patterns, e.g. <code class="docutils literal notranslate"><span class="pre">[&quot;dc1&quot;,</span> <span class="pre">&quot;!otherdc*&quot;]</span></code> used to specify the DCs to include or exclude from backup.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">failFast</span></code> - Optional field. Stop repair on first error.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">intensity</span></code> - Optional field. Specifies how many token ranges (per shard) to repair in a single Scylla repair job. By default this is 1.
+If you set it to 0 the number of token ranges is adjusted to the maximum supported by node (see max_repair_ranges_in_parallel in Scylla logs).
+Valid values are 0 and integers &gt;= 1. Higher values will result in increased cluster load and slightly faster repairs.
+Changing the intensity impacts repair granularity if you need to resume it, the higher the value the more work on resume.
+For Scylla clusters that <strong>do not support row-level repair</strong>, intensity can be a decimal between (0,1).
+In that case it specifies percent of shards that can be repaired in parallel on a repair master node.
+For Scylla clusters that are row-level repair enabled, setting intensity below 1 has the same effect as setting intensity 1.
+<strong>Intensity is a number passed as string due to lack of support for float values in k8s controller runtime</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parallel</span></code> - Optional field. Specifies the maximum number of Scylla repair jobs that can run at the same time (on different token ranges and replicas).
+Each node can take part in at most one repair at any given moment. By default the maximum possible parallelism is used.
+The effective parallelism depends on a keyspace replication factor (RF) and the number of nodes.
+The formula to calculate it is as follows: number of nodes / RF, ex. for 6 node cluster with RF=3 the maximum parallelism is 2.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keyspace</span></code> - Optional field. A list of keyspace/tables glob patterns, e.g. <code class="docutils literal notranslate"><span class="pre">[&quot;keyspace&quot;,</span> <span class="pre">&quot;!keyspace.table_prefix_*&quot;]</span></code>
+used to include or exclude keyspaces from repair.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smallTableThreshold</span></code> - Optional field. Enable small table optimization for tables of size lower than given threshold.
+Supported units <code class="docutils literal notranslate"><span class="pre">[B,</span> <span class="pre">MiB,</span> <span class="pre">GiB,</span> <span class="pre">TiB]</span></code> (default <code class="docutils literal notranslate"><span class="pre">&quot;1GiB&quot;</span></code>).</p></li>
+</ul>
+<p>Backups:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> - <strong>required</strong> - human readable name of the task. It must be unique across all tasks.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">startDate</span></code> - Optional field. Specifies the task start date expressed in the RFC3339 format or <code class="docutils literal notranslate"><span class="pre">now[+duration]</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">now+3d2h10m</span></code>,
+valid units are d, h, m, s (default “now”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interval</span></code> - Optional field. task schedule interval e.g. <code class="docutils literal notranslate"><span class="pre">3d2h10m</span></code>, valid units are d, h, m, s (default “0”).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numRetries</span></code> - Optional field. the number of times a scheduled task will retry to run before failing (default 3).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dc</span></code> - Optional field. A list of datacenter glob patterns, e.g. <code class="docutils literal notranslate"><span class="pre">[&quot;dc1&quot;,&quot;!otherdc*&quot;]</span></code> used to specify the DCs to include or exclude from backup.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keyspace</span></code> - Optional field. A list of keyspace/tables glob patterns, e.g. <code class="docutils literal notranslate"><span class="pre">[&quot;keyspace&quot;,&quot;!keyspace.table_prefix_*&quot;]</span></code> used to include or exclude keyspaces from backup.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">location</span></code> - Optional field. A list of backup locations in the format <code class="docutils literal notranslate"><span class="pre">[&lt;dc&gt;:]&lt;provider&gt;:&lt;name&gt;</span></code> ex. <code class="docutils literal notranslate"><span class="pre">s3:my-bucket</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">&lt;dc&gt;:</span></code> part is optional and is only needed when different datacenters are being used to upload data to different locations.
+<code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> Optional field. must be an alphanumeric string and may contain a dash and or a dot, but other characters are forbidden.
+The only supported storage <provider> at the moment are <code class="docutils literal notranslate"><span class="pre">s3</span></code> and <code class="docutils literal notranslate"><span class="pre">gcs</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rateLimit</span></code> - Optional field. A list of megabytes (MiB) per second rate limits expressed in the format <code class="docutils literal notranslate"><span class="pre">[&lt;dc&gt;:]&lt;limit&gt;</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">&lt;dc&gt;:</span></code> part is optional and only needed when different datacenters need different upload limits.
+Set to 0 for no limit (default 100).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">retention</span></code> - Optional field. The number of backups which are to be stored (default 3).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">snapshotParallel</span></code> - Optional field. A list of snapshot parallelism limits in the format <code class="docutils literal notranslate"><span class="pre">[&lt;dc&gt;:]&lt;limit&gt;</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">&lt;dc&gt;:</span></code> part is optional and allows for specifying different limits in selected datacenters.
+If The <code class="docutils literal notranslate"><span class="pre">&lt;dc&gt;:</span></code> part is not set, the limit is global (e.g. <code class="docutils literal notranslate"><span class="pre">[&quot;dc1:2,5&quot;]</span></code>) the runs are parallel in n nodes (2 in dc1)
+and n nodes in all the other datacenters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uploadParallel</span></code> - Optional field. A list of upload parallelism limits in the format <code class="docutils literal notranslate"><span class="pre">[&lt;dc&gt;:]&lt;limit&gt;</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">&lt;dc&gt;:</span></code> part is optional and allows for specifying different limits in selected datacenters.
+If The <code class="docutils literal notranslate"><span class="pre">&lt;dc&gt;:</span></code> part is not set the limit is global (e.g. <code class="docutils literal notranslate"><span class="pre">[&quot;dc1:2,5&quot;]</span></code>) the runs are parallel in n nodes (2 in dc1)
+and n nodes in all the other datacenters.</p></li>
+</ul>
+</section>
+<section id="datacenter-settings">
+<h3>Datacenter Settings<a class="headerlink" href="#datacenter-settings" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the datacenter. Usually, a datacenter corresponds to a region.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">racks</span></code>: List of racks for the specific datacenter.</p></li>
+</ul>
+</section>
+<section id="rack-settings">
+<h3>Rack Settings<a class="headerlink" href="#rack-settings" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the rack. Usually, a rack corresponds to an availability zone.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">members</span></code>: Number of Scylla members for the specific rack. (In Scylla documentation, they are called nodes. We don’t call them nodes to avoid confusion as a Scylla Node corresponds to a Kubernetes Pod, not a Kubernetes Node).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage</span></code>: Defines the specs of the underlying storage.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">capacity</span></code>: Capacity of the PersistentVolume to request.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storageClassName</span></code>: Optional field. <a class="reference external" href="https://kubernetes.io/docs/concepts/storage/storage-classes/">StorageClass</a> of PersistentVolume to request.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resources</span></code>: Defines the CPU and RAM resources for the Scylla Pods.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">requests</span></code>: The minimum amount of resources needed to run a Scylla container.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu</span></code>: CPU requests.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memory</span></code>: RAM requests.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limits</span></code>: The maximum amount of resources that can be used by a Scylla container.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cpu</span></code>: CPU limits.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memory</span></code>: RAM limits.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">agentResources</span></code>: Optional field. Defines the CPU and RAM resources for the Scylla Manager Agent container. See <code class="docutils literal notranslate"><span class="pre">resources</span></code> for details.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">volumes</span></code>:  Optional field. Defines volumes available in Scylla Pod. See <a class="reference external" href="https://kubernetes.io/docs/concepts/storage/volumes/">details</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">volumeMounts</span></code>:  Optional field. Defines which volumes will be attached to Scylla container.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">agentVolumeMounts</span></code>:  Optional field. Defines which volumes will be attached to Agent container.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scyllaConfig</span></code>: Optional field. name of custom config map which will be merged with Scylla config.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scyllaAgentConfig</span></code>: Optional field. name of custom secret which will be merged with Scylla Manager Agent config.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">placement</span></code>: Optional field. Defines the placement of Scylla Pods. Has the following subfields:</p>
+<ul>
+<li><p><a class="reference external" href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature"><code class="docutils literal notranslate"><span class="pre">nodeAffinity</span></code></a></p></li>
+<li><p><a class="reference external" href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature"><code class="docutils literal notranslate"><span class="pre">podAffinity</span></code></a></p></li>
+<li><p><a class="reference external" href="https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature"><code class="docutils literal notranslate"><span class="pre">podAntiAffinity</span></code></a></p></li>
+<li><p><a class="reference external" href="https://kubernetes.io/docs/concepts/configuration/taint-and-toleration"><code class="docutils literal notranslate"><span class="pre">tolerations</span></code></a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+        </div>
+
+        <div id="sidebar" class="large-3 large-pull-6 columns"><div class="side-nav">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="generic.html">Deploying Scylla on a Kubernetes Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eks.html">Deploying Scylla on EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gke.html">Deploying Scylla on GKE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helm.html">Deploying Scylla stack using Helm Charts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manager.html">Deploying Scylla Manager on a Kubernetes Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Setting up Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="node_operations.html">Node operations using Scylla Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade of Scylla Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known_issues.html">Known issues</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Scylla Cluster CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to Scylla Operator</a></li>
+</ul>
+
+</div>
+        </div>
+
+        <div class="large-3 columns">
+            
+                <div class="scylla-dropdown ">
+    <a href="#" data-options="align:bottom" data-dropdown="drop-versions" class="scylla-dropdown__button">
+        
+            v1.3
+        
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </a>
+    <ul id="drop-versions" class="f-dropdown scylla-dropdown__content" data-dropdown-content>
+            
+              <li><a href="scylla_cluster_crd.html">v1.3</a></li>
+            
+            
+              <li><a href="../v1.2/scylla_cluster_crd.html">v1.2</a></li>
+            
+            
+              <li><a href="../v1.1/scylla_cluster_crd.html">v1.1</a></li>
+            
+            
+              <li><a href="../v1.0/scylla_cluster_crd.html">v1.0</a></li>
+            
+            
+              <li><a href="../v0.3/scylla_cluster_crd.html">v0.3</a></li>
+            
+            
+    </ul>
+</div>
+            
+        </div>
+
+    </div>
+</section>
+
+<!-- newsleter modal -->
+
+<div id="newsletter_signup" class="reveal-modal tiny radius dark_modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <a class="close-reveal-modal" aria-label="Close">×</a>
+    <h2 id="modalTitle">Sign up for the Scylla newsletter</h2>
+    <div id="mc_embed_signup">
+        <form action="//cloudius-systems.us10.list-manage.com/subscribe/post?u=df8bb543c68230d5f7b4dcf78&amp;id=9a4589f144" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
+            <div id="mc_embed_signup_scroll">
+
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-EMAIL">Email</label></div>
+                        <div class="small-9 columns"><input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL"></div>
+                    </div>
+                </div>
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-FNAME">First Name </label></div>
+                        <div class="small-9 columns"><input type="text" value="" name="FNAME" class="" id="mce-FNAME"></div>
+                    </div>
+                </div>
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-LNAME">Last Name </label></div>
+                        <div class="small-9 columns"><input type="text" value="" name="LNAME" class="" id="mce-LNAME"></div>
+                    </div>
+                </div>
+                <div id="mce-responses" class="clear">
+                    <div class="response" id="mce-error-response" style="display:none"></div>
+                    <div class="response" id="mce-success-response" style="display:none"></div>
+                </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <div style="position: absolute; left: -5000px;"><input type="text" name="b_df8bb543c68230d5f7b4dcf78_9a4589f144" tabindex="-1" value=""></div>
+                <div class="clear"><input type="submit" class="button" value="Sign up" name="subscribe" id="mc-embedded-subscribe"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- end newsleter modal -->
+
+
+
+<!-- footer.html -->
+<footer id="footer">
+    <div class="footer-top">
+        <a class="logo" href="https://www.scylladb.com"><img src="_static/img/logo-scylla-horizontal-RGB.svg" alt=""></a>
+        <div class="footer-links">
+            <a class="link" href="https://docs.scylladb.com">Docs</a>
+            <a class="link" href="https://www.scylladb.com/company/contact-us/">Contact Us</a>
+            <a class="link" href="https://www.scylladb.com/company/">About Us</a>
+          <div class="scylla-dropdown">
+    <a href="#" data-options="align:top" data-dropdown="drop-contribute" class="scylla-dropdown__button">
+        Contribute 
+        <i class="fa fa-github" aria-hidden="true"></i>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </a>
+    <ul id="drop-contribute" class="f-dropdown scylla-dropdown__content" data-dropdown-content>
+        <li><a href="https://github.com/scylladb/scylla-operator/issues/new?title=Issue in page Scylla Cluster CRD&&body=I%20would%20like%20to%20report%20an%20issue%20in%20page%20https://operator.docs.scylladb.com/v1.3/scylla_cluster_crd%0A%0A%23%23%23%20Problem%0A%0A%23%23%23%20%20Suggest%20a%20fix" target="_blank">Report a doc issue <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+        <li><a href="https://docs.scylladb.com/contribute/" target="_blank">Learn how to contribute <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+    </ul>
+</div>
+        </div>
+        <div class="footer-actions">
+            <a class="link-icon" href="https://github.com/ScyllaDB" target="_blank">
+                <span class="icon-github2"></span></a>
+            <a class="link-icon" href="https://twitter.com/ScyllaDB" target="_blank">
+                <span class="icon-twitter"></span></a>
+            <a class="link-icon" href="https://www.linkedin.com/company/scylladb"  target="_blank">
+                <span class="icon-linkedin2"></span></a>
+            <a class="link-icon" href="https://www.facebook.com/scylladb/" target="_blank">
+                <span class="icon-facebook"></span></a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="footer-info">
+            <div class="footer-copyright">
+                &#169; 2021, ScyllaDB. All rights reserved.
+            </div>
+            <div class="footer-last-updated">
+                Last updated on 13 July 2021.
+            </div>
+            <div class="footer-version">
+                Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+                &amp; <a href="https://sphinx-theme.scylladb.com">ScyllaDB Theme 0.1.25</a>
+            </div>
+        </div>
+        <div class="footer-links">
+        </div>
+    </div>
+</footer>
+<!-- end footer.html -->
+
+<!-- bodyscripts.html -->
+<!-- at the end of the BODY --> 
+<script src="_static/js/vendor/jquery.js"></script>
+<script src="_static/js/vendor/jquery.cookie.min.js"></script>
+<script src="_static/expertrec.js"></script>
+<script src="_static/js/foundation/foundation.js"></script>
+<script src="_static/js/foundation/foundation.topbar.js"></script>
+<script src="_static/js/foundation/foundation.dropdown.js"></script>
+<script src="_static/app.js"></script>
+<script>
+    $(document).foundation();
+</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T8P2JP"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <!-- end bodyscripts.html -->
+</body>
+</html>

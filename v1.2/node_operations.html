@@ -1,0 +1,548 @@
+
+
+
+<!doctype html>
+<html class="no-js" lang="en">
+  
+<head><!-- begin head.html -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+    Node operations using Scylla Operator | Scylla Docs
+    </title>
+    <meta name="description" content="Scylla is an Apache Cassandra-compatible NoSQL data store that can handle 1 million transactions per second on a single server."/>
+
+    <link rel="icon" href="_static/img/favicon.ico" type="image/x-icon"/>
+    <link rel="canonical" href="https://docs.scylladb.com/">
+    <link rel="author" href="mailto:info@scylladb.com">
+    <link rel="stylesheet" href="_static/" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_tabs/tabs.css" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/css/foundation.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/doc/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/v4-shims.css"/>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+
+    <script src="_static/js/vendor/modernizr.js"></script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-T8P2JP');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Marketo -->
+    <script type="text/javascript"> (function() { var didInit = false; function initMunchkin() { if(didInit === false) { didInit = true; Munchkin.init('791-QBF-350'); } } var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//munchkin.marketo.net/munchkin.js'; s.onreadystatechange = function() { if (this.readyState == 'complete' || this.readyState == 'loaded') { initMunchkin(); } }; s.onload = initMunchkin; document.getElementsByTagName('head')[0].appendChild(s); })(); </script>
+    <!-- End Marketo -->
+
+<!-- end head.html -->
+</head>
+
+<body>
+
+
+
+<header id="header" class="animated">
+    <div class="topbar_continer contain-to-grid clearfix">
+        <nav class="top-bar" id="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <div class="logo">
+                        <a href="https://docs.scylladb.com/"><img src="_static/img/logo-scylla-docs.svg" alt="" width="151"></a>
+                    </div>
+                </li>
+                <li class="toggle-topbar"><a href="#"><span class="icon-manu"></span></a></li>
+            </ul>
+            <section class="top-bar-section clearfix">
+                <ul class="right">
+                    
+                    <li>
+                        <a href="https://scylladb.github.io/scylla-operator/">Scylla Operator</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://docs.scylladb.com/scylla-cloud/">Scylla Cloud</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://university.scylladb.com/">Scylla University</a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.scylladb.com/">ScyllaDB Home</a>
+                    </li>
+                    
+                    <li class="search_continer show-for-medium-up">	
+                        <ci-search></ci-search>	
+                    </li>	
+                </ul>
+            </section>
+        </nav>
+    </div>
+</header>
+<section id="content">
+    <div class="row">
+	
+	<div class="large-6 large-push-3 columns">
+
+        
+        <div class="admonition caution">
+            <p class="admonition-title">Caution</p>
+            
+            You are not reading the most current version of the documentation.
+            
+            If you want up-to-date information, please have a look at 
+            <a href="../stable/node_operations.html">
+                
+                    v1.3
+                        
+            </a>.
+        </div>
+        
+
+        <section id="node-operations-using-scylla-operator">
+<h1>Node operations using Scylla Operator<a class="headerlink" href="#node-operations-using-scylla-operator" title="Permalink to this headline">¶</a></h1>
+<section id="upgrading-version-of-scylla">
+<h2>Upgrading version of Scylla<a class="headerlink" href="#upgrading-version-of-scylla" title="Permalink to this headline">¶</a></h2>
+<p>To upgrade Scylla version using Operator user have to modify existing ScyllaCluster definition.</p>
+<p>In this example cluster will be upgraded to <code class="docutils literal notranslate"><span class="pre">2020.1.0</span></code> version.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla patch ScyllaCluster simple-cluster  -p <span class="s1">&#39;{&quot;spec&quot;:{&quot;version&quot;: &quot;4.2.2}}&#39;</span> --type<span class="o">=</span>merge
+</pre></div>
+</div>
+<p>Operator supports two types of version upgrades:</p>
+<ol class="simple">
+<li><p>Patch upgrade</p></li>
+<li><p>Generic upgrade</p></li>
+</ol>
+<p><strong>Patch upgrade</strong></p>
+<p>Patch upgrade is executed when only patch version change is detected according to <a class="reference external" href="https://semver.org/">semantic versioning format</a>.
+Procedure simply rolls out a restart of whole cluster and upgrades Scylla container image for each node one by one.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">4.0.0</span> <span class="pre">-&gt;</span> <span class="pre">4.0.1</span></code></p>
+<p><strong>Generic upgrade</strong></p>
+<p>Generic upgrades are executed for the non patch version changes.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">4.0.0</span> <span class="pre">-&gt;</span> <span class="pre">2020.1.0</span></code> or <code class="docutils literal notranslate"><span class="pre">4.0.0</span> <span class="pre">-&gt;</span> <span class="pre">4.1.0</span></code> or even <code class="docutils literal notranslate"><span class="pre">4.0.0</span> <span class="pre">-&gt;</span> <span class="pre">nightly</span></code></p>
+<p>User can observe current state of upgrade in ScyllaCluster status.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla describe ScyllaCluster simple-cluster
+<span class="o">[</span>...<span class="o">]</span>
+Status:
+  Racks:
+    us-east-1a:
+      Members:        <span class="m">3</span>
+      Ready Members:  <span class="m">3</span>
+      Version:        <span class="m">4</span>.1.9
+  Upgrade:
+    Current Node:         simple-cluster-us-east-1-us-east-1a-2
+    Current Rack:         us-east-1a
+    Data Snapshot Tag:    so_data_20201228135002UTC
+    From Version:         <span class="m">4</span>.1.9
+    State:                validate_upgrade
+    System Snapshot Tag:  so_system_20201228135002UTC
+    To Version:           <span class="m">4</span>.2.2
+</pre></div>
+</div>
+<p>Each upgrade begins with taking a snapshot of <code class="docutils literal notranslate"><span class="pre">system</span></code> and <code class="docutils literal notranslate"><span class="pre">system_schema</span></code> keyspaces on all nodes in parallel.
+Name of this snapshot tag is saved in upgrade status under <code class="docutils literal notranslate"><span class="pre">System</span> <span class="pre">Snapshot</span> <span class="pre">Tag</span></code>.</p>
+<p>Before nodes in rack are upgraded, underlying StatefulSet is changed to use <code class="docutils literal notranslate"><span class="pre">OnDelete</span></code> UpgradeStrategy.
+This allows Operator have a full control over when Pod image is changed.</p>
+<p>When a node is being upgraded, <a class="reference external" href="#maintenance-mode">maintenance mode</a> is enabled, then the node is drained and snapshot of all data keyspaces is taken.
+Snapshot tag is saved under <code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Snapshot</span> <span class="pre">Tag</span></code> and is the same for all nodes during the procedure.
+Once everything is set up, maintenance mode is disabled and Scylla Pod is deleted. Underlying StatefulSet will bring up a new
+Pod with upgraded version.
+Once Pod will become ready, data snapshot from this particular node is removed, and Operator moves to next node.</p>
+<p>Once every rack is upgraded, system snapshot is removed from all nodes in parallel and previous StatefulSet UpgradeStrategy is restored.
+At this point, all your nodes should be already in desired version.</p>
+<p>Current state of upgrade can be traced using <code class="docutils literal notranslate"><span class="pre">Current</span> <span class="pre">Node</span></code>, <code class="docutils literal notranslate"><span class="pre">Current</span> <span class="pre">Rack</span></code> and <code class="docutils literal notranslate"><span class="pre">State</span></code> status fields.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Current</span> <span class="pre">Node</span></code> shows which node is being upgraded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Current</span> <span class="pre">Rack</span></code> displays which rack is being upgraded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">State</span></code> contain information at which stage upgrade is.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">State</span></code> can have following values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">begin_upgrade</span></code> - upgrade is starting</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">check_schema_agreement</span></code> - Operator waits until all nodes reach schema agreement. It waits for it for 1 minute, prints an error log message and check is retried.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">create_system_backup</span></code> - system keyspaces snapshot is being taken</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">find_next_rack</span></code> - Operator finds out which rack must be upgraded next, decision is saved in <code class="docutils literal notranslate"><span class="pre">Current</span> <span class="pre">Rack</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">upgrade_image_in_pod_spec</span></code> - Image and UpgradeStrategy is upgraded in underlying StatefulSet</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">find_next_node</span></code> - Operator finds out which node must be upgraded next, decision is saved in <code class="docutils literal notranslate"><span class="pre">Current</span> <span class="pre">Node</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enable_maintenance_mode</span></code> - maintenance mode is being enabled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">drain_node</span></code> - node is being drained</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">backup_data</span></code> - snapshot of data keyspaces is being taken</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">disable_maintenance_mode</span></code> - maintenance mode is being disabled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delete_pod</span></code> - Scylla Pod is being deleted</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">validate_upgrade</span></code> - Operator validates if new pod enters Ready state and if Scylla version is upgraded</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clear_data_backup</span></code> - snapshot of data keyspaces is being removed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clear_system_backup</span></code> - snapshot of system keyspaces is being removed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">restore_upgrade_strategy</span></code> - restore UpgradeStrategy in underlying StatefulSet</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">finish_upgrade</span></code> - upgrade cleanup</p></li>
+</ul>
+<p><strong>Recovering from upgrade failure</strong></p>
+<p>Upgrade may get stuck on <code class="docutils literal notranslate"><span class="pre">validate_upgrade</span></code> stage. This happens when Scylla Pod refuses to properly boot up.</p>
+<p>To continue with upgrade, first turn off operator by scaling Operator replicas to zero:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla-operator-system scale sts scylla-operator-controller-manager --replicas<span class="o">=</span><span class="m">0</span>
+</pre></div>
+</div>
+<p>Then user have to manually resolve issue with Scylla by checking what is the root cause of a failure in Scylla container logs.
+If needed data and system keyspaces SSTable snapshots are available on the node. You can check ScyllaCluster status for their names.</p>
+<p>Once issue is resolved and Scylla Pod is up and running (Pod is in Ready state), scale Operator back to one replica:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla-operator-system scale sts scylla-operator-controller-manager --replicas<span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+<p>Operator should continue upgrade process from where it left off.</p>
+</section>
+<section id="replacing-a-scylla-node">
+<h2>Replacing a Scylla node<a class="headerlink" href="#replacing-a-scylla-node" title="Permalink to this headline">¶</a></h2>
+<p>In the case of a host failure, it may not be possible to bring back the node to life.</p>
+<p>Replace dead node operation will cause the other nodes in the cluster to stream data to the node that was replaced.
+This operation can take some time (depending on the data size and network bandwidth).</p>
+<p><em>This procedure is for replacing one dead node. To replace more than one dead node, run the full procedure to completion one node at a time</em></p>
+<p><strong>Procedure</strong></p>
+<ol>
+<li><p>Verify the status of the node using <code class="docutils literal notranslate"><span class="pre">nodetool</span> <span class="pre">status</span></code> command, the node with status DN is down and need to be replaced</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla <span class="nb">exec</span> -ti simple-cluster-us-east-1-us-east-1a-0 -c scylla -- nodetool status
+Datacenter: us-east-1
+<span class="o">=====================</span>
+<span class="nv">Status</span><span class="o">=</span>Up/Down
+<span class="p">|</span>/ <span class="nv">State</span><span class="o">=</span>Normal/Leaving/Joining/Moving
+--  Address        Load       Tokens       Owns    Host ID                               Rack
+UN  <span class="m">10</span>.43.125.110  <span class="m">74</span>.63 KB   <span class="m">256</span>          ?       8ebd6114-969c-44af-a978-87a4a6c65c3e  us-east-1a
+UN  <span class="m">10</span>.43.231.189  <span class="m">91</span>.03 KB   <span class="m">256</span>          ?       35d0cb19-35ef-482b-92a4-b63eee4527e5  us-east-1a
+DN  <span class="m">10</span>.43.43.51    <span class="m">74</span>.77 KB   <span class="m">256</span>          ?       1ffa7a82-c41c-4706-8f5f-4d45a39c7003  us-east-1a
+</pre></div>
+</div>
+</li>
+<li><p>Identify service which is bound to down node by checking IP address</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla get svc
+NAME                                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>                                                           AGE
+simple-cluster-client                   ClusterIP   None            &lt;none&gt;        <span class="m">9180</span>/TCP                                                          3h12m
+simple-cluster-us-east-1-us-east-1a-0   ClusterIP   <span class="m">10</span>.43.231.189   &lt;none&gt;        <span class="m">7000</span>/TCP,7001/TCP,7199/TCP,10001/TCP,9042/TCP,9142/TCP,9160/TCP   3h12m
+simple-cluster-us-east-1-us-east-1a-1   ClusterIP   <span class="m">10</span>.43.125.110   &lt;none&gt;        <span class="m">7000</span>/TCP,7001/TCP,7199/TCP,10001/TCP,9042/TCP,9142/TCP,9160/TCP   3h11m
+simple-cluster-us-east-1-us-east-1a-2   ClusterIP   <span class="m">10</span>.43.43.51     &lt;none&gt;        <span class="m">7000</span>/TCP,7001/TCP,7199/TCP,10001/TCP,9042/TCP,9142/TCP,9160/TCP   3h5m
+</pre></div>
+</div>
+</li>
+<li><p>Drain node which we would like to replace using. <strong>This command may delete your data from local disks attached to given node!</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl drain gke-scylla-demo-default-pool-b4b390a1-6j12 --ignore-daemonsets --delete-local-data
+</pre></div>
+</div>
+<p>Pod which will be replaced should enter the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla get pods
+NAME                                    READY   STATUS    RESTARTS   AGE
+simple-cluster-us-east-1-us-east-1a-0   <span class="m">2</span>/2     Running   <span class="m">0</span>          3h21m
+simple-cluster-us-east-1-us-east-1a-1   <span class="m">2</span>/2     Running   <span class="m">0</span>          3h19m
+simple-cluster-us-east-1-us-east-1a-2   <span class="m">0</span>/2     Pending   <span class="m">0</span>          8m14s
+</pre></div>
+</div>
+</li>
+<li><p>To being node replacing, add <code class="docutils literal notranslate"><span class="pre">scylla/replace=&quot;&quot;</span></code> label to service bound to pod we are replacing.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla label svc simple-cluster-us-east-1-us-east-1a-2 scylla/replace<span class="o">=</span><span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Your failed Pod should be recreated on available k8s node</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla get pods
+NAME                                    READY   STATUS    RESTARTS   AGE
+simple-cluster-us-east-1-us-east-1a-0   <span class="m">2</span>/2     Running   <span class="m">0</span>          3h27m
+simple-cluster-us-east-1-us-east-1a-1   <span class="m">2</span>/2     Running   <span class="m">0</span>          3h25m
+simple-cluster-us-east-1-us-east-1a-2   <span class="m">1</span>/2     Running   <span class="m">0</span>          9s
+</pre></div>
+</div>
+<p>Because other nodes in cluster must stream data to new node this operation might take some time depending on how much data your cluster stores.
+After bootstraping is over, your new Pod should be ready to go.
+Old one shouldn’t be no longer visible in <code class="docutils literal notranslate"><span class="pre">nodetool</span> <span class="pre">status</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla <span class="nb">exec</span> -ti simple-cluster-us-east-1-us-east-1a-0 -c scylla -- nodetool status
+Datacenter: us-east-1
+<span class="o">=====================</span>
+<span class="nv">Status</span><span class="o">=</span>Up/Down
+<span class="p">|</span>/ <span class="nv">State</span><span class="o">=</span>Normal/Leaving/Joining/Moving
+--  Address        Load       Tokens       Owns    Host ID                               Rack
+UN  <span class="m">10</span>.43.125.110  <span class="m">74</span>.62 KB   <span class="m">256</span>          ?       8ebd6114-969c-44af-a978-87a4a6c65c3e  us-east-1a
+UN  <span class="m">10</span>.43.231.189  <span class="m">91</span>.03 KB   <span class="m">256</span>          ?       35d0cb19-35ef-482b-92a4-b63eee4527e5  us-east-1a
+UN  <span class="m">10</span>.43.191.172  <span class="m">74</span>.77 KB   <span class="m">256</span>          ?       1ffa7a82-c41c-4706-8f5f-4d45a39c7003  us-east-1a
+</pre></div>
+</div>
+</li>
+<li><p>Run the repair on the cluster to make sure that the data is synced with the other nodes in the cluster. You can use <a class="reference internal" href="manager.html"><span class="doc">Scylla Manager</span></a> to run the repair.</p></li>
+</ol>
+</section>
+<section id="automatic-cleanup-and-replacement-in-case-when-k8s-node-is-lost">
+<h2>Automatic cleanup and replacement in case when k8s node is lost<a class="headerlink" href="#automatic-cleanup-and-replacement-in-case-when-k8s-node-is-lost" title="Permalink to this headline">¶</a></h2>
+<p>In case when your k8s cluster loses one of the nodes due to incident or explicit removal, Scylla Pods may become unschedulable due to PVC node affinity.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">automaticOrphanedNodeCleanup</span></code> flag is enabled in your ScyllaCluster, Scylla Operator will perform automatic
+node replacement of a Pod which lost his bound resources.</p>
+</section>
+<section id="maintenance-mode">
+<h2>Maintenance mode<a class="headerlink" href="#maintenance-mode" title="Permalink to this headline">¶</a></h2>
+<p>When maintenance mode is enabled, readiness probe of Scylla Pod will always return failure and liveness probe will always succeed. This causes that Pod under maintenance
+is being removed from K8s Load Balancer and DNS registry but Pod itself stays alive.</p>
+<p>This allows the Scylla Operator to interact with Scylla and Scylla dependencies inside the Pod.
+For example user may turn off Scylla process, do something with the filesystem and bring the process back again.</p>
+<p>To enable maintenance mode add <code class="docutils literal notranslate"><span class="pre">scylla/node-maintenance</span></code> label to service in front of Scylla Pod.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla label svc simple-cluster-us-east1-b-us-east1-2 scylla/node-maintenance<span class="o">=</span><span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+<p>To disable, simply remove this label from service.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla label svc simple-cluster-us-east1-b-us-east1-2 scylla/node-maintenance-
+</pre></div>
+</div>
+</section>
+<section id="restore-from-backup">
+<h2>Restore from backup<a class="headerlink" href="#restore-from-backup" title="Permalink to this headline">¶</a></h2>
+<p>This procedure will describe how to restore from backup taken using <a class="reference internal" href="manager.html"><span class="doc">Scylla Manager</span></a> to a fresh <strong>empty</strong> cluster of any size.</p>
+<p>First identify to which snapshot you want to restore. To get list of available snapshot execute following command on Scylla Manager Pod.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sctool backup list -c &lt;CLUSTER_ID&gt; --all-clusters -L &lt;BACKUP_LOCATION&gt;
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CLUSTER_ID</span></code> - is a name of a cluster or ID under which ScyllaCluster was registered. You can find it in ScyllaCluster Status.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BACKUP_LOCATION</span></code> - is a location where backup is stored. For example, for bucket called <code class="docutils literal notranslate"><span class="pre">backups</span></code> stored in AWS S3, location is <code class="docutils literal notranslate"><span class="pre">s3:backups</span></code>.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sctool backup list -c simple-cluster --all-clusters -L s3:backups
+Snapshots:
+  - sm_20201227144037UTC <span class="o">(</span>409MiB<span class="o">)</span>
+  - sm_20201228145917UTC <span class="o">(</span>434MiB<span class="o">)</span>
+Keyspaces:
+  - users <span class="o">(</span><span class="m">9</span> tables<span class="o">)</span>
+  - system_auth <span class="o">(</span><span class="m">2</span> tables<span class="o">)</span>
+  - system_distributed <span class="o">(</span><span class="m">3</span> tables<span class="o">)</span>
+  - system_schema <span class="o">(</span><span class="m">13</span> tables<span class="o">)</span>
+  - system_traces <span class="o">(</span><span class="m">5</span> tables<span class="o">)</span>
+</pre></div>
+</div>
+<p>To get the list of files use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sctool backup files -c &lt;CLUSTER_ID&gt; -L &lt;BACKUP_LOCATION&gt; -T &lt;SNAPSHOT_TAG&gt;
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SNAPSHOT_TAG</span></code> - name of snapshot you want to restore.</p></li>
+</ul>
+<p>Before we start restoring the data, we have to restore the schema.
+The first output line is a path to schemas archive, for example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>s3://backups/backup/schema/cluster/ed63b474-2c05-4f4f-b084-94541dd86e7a/task_287791d9-c257-4850-aef5-7537d6e69d90_tag_sm_20201228145917UTC_schema.tar.gz      ./
+</pre></div>
+</div>
+<p>To download this archive you can use AWS CLI tool <code class="docutils literal notranslate"><span class="pre">aws</span> <span class="pre">s3</span> <span class="pre">cp</span></code>.</p>
+<p>This archive contains a single CQL file for each keyspace in the backup.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tar -ztvf task_287791d9-c257-4850-aef5-7537d6e69d90_tag_sm_20201228145917UTC_schema.tar.gz
+-rw------- <span class="m">0</span>/0           <span class="m">12671</span> <span class="m">2020</span>-12-28 <span class="m">13</span>:17 users.cql
+-rw------- <span class="m">0</span>/0            <span class="m">2216</span> <span class="m">2020</span>-12-28 <span class="m">13</span>:17 system_auth.cql
+-rw------- <span class="m">0</span>/0             <span class="m">921</span> <span class="m">2020</span>-12-28 <span class="m">13</span>:17 system_distributed.cql
+-rw------- <span class="m">0</span>/0           <span class="m">12567</span> <span class="m">2020</span>-12-28 <span class="m">13</span>:17 system_schema.cql
+-rw------- <span class="m">0</span>/0            <span class="m">4113</span> <span class="m">2020</span>-12-28 <span class="m">13</span>:17 system_traces.cql
+</pre></div>
+</div>
+<p>Extract this archive and copy each schema file to one of the cluster Pods by:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla cp users.cql simple-cluster-us-east-1-us-east-1a-0:/tmp/users.cql -c scylla
+</pre></div>
+</div>
+<p>To import schema simply execute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla <span class="nb">exec</span> simple-cluster-us-east-1-us-east-1a-0 -c scylla -- cqlsh -f /tmp/users.cql
+</pre></div>
+</div>
+<p>Once the schema is recreated we can proceed to downloading data files.</p>
+<p>First let’s save a list of snapshot files to file called <code class="docutils literal notranslate"><span class="pre">backup_files.out</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kubectl -n scylla-manager-system <span class="nb">exec</span> scylla-manager-controller-0 -- sctool backup files -c simple-cluster -L s3:backups -T sm_20201228145917UTC &gt; backup_files.out
+</pre></div>
+</div>
+<p>We will be using <code class="docutils literal notranslate"><span class="pre">sstableloader</span></code> to restore data. <code class="docutils literal notranslate"><span class="pre">sstableloader</span></code> needs a specific directory structure to work namely: <code class="docutils literal notranslate"><span class="pre">&lt;keyspace&gt;/&lt;table&gt;/&lt;contents&gt;</span></code>
+To create this directory structure and download all the files execute these commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir snapshot
+<span class="nb">cd</span> snapshot
+<span class="c1"># Create temporary directory structure.</span>
+cat ../backup_files.out <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> xargs mkdir -p
+<span class="c1"># Download snapshot files.</span>
+cat ../backup_files.out <span class="p">|</span> xargs -n2 aws s3 cp
+</pre></div>
+</div>
+<p>To load data into cluster pass cluster address to <code class="docutils literal notranslate"><span class="pre">sstableloader</span></code> together with path to data files and credentials:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sstableloader -d <span class="s1">&#39;simple-cluster-us-east-1-us-east-1a-0.scylla.svc,simple-cluster-us-east-1-us-east-1a-1.scylla.svc,simple-cluster-us-east-1-us-east-1a-2.scylla.svc&#39;</span> ./users/data_0 --username scylla --password &lt;password&gt;
+</pre></div>
+</div>
+<p>Depending on how big is your data set, this operation may take some time.
+Once it finishes, data from the snapshot is restored and you may clean up the host.</p>
+</section>
+</section>
+
+        </div>
+
+        <div id="sidebar" class="large-3 large-pull-6 columns"><div class="side-nav">
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="generic.html">Deploying Scylla on a Kubernetes Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eks.html">Deploying Scylla on EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gke.html">Deploying Scylla on GKE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helm.html">Deploying Scylla stack using Helm Charts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manager.html">Deploying Scylla Manager on a Kubernetes Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Setting up Monitoring</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Node operations using Scylla Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade of Scylla Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scylla_cluster_crd.html">Scylla Cluster CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to Scylla Operator</a></li>
+</ul>
+
+</div>
+        </div>
+
+        <div class="large-3 columns">
+            
+                <div class="scylla-dropdown ">
+    <a href="#" data-options="align:bottom" data-dropdown="drop-versions" class="scylla-dropdown__button">
+        
+            v1.2
+        
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </a>
+    <ul id="drop-versions" class="f-dropdown scylla-dropdown__content" data-dropdown-content>
+            
+              <li><a href="../stable/node_operations.html">v1.3</a></li>
+            
+            
+              <li><a href="node_operations.html">v1.2</a></li>
+            
+            
+              <li><a href="../v1.1/node_operations.html">v1.1</a></li>
+            
+            
+              <li><a href="../v1.0/node_operations.html">v1.0</a></li>
+            
+            
+              <li><a href="../v0.3/index.html">v0.3</a></li>
+            
+            
+    </ul>
+</div>
+            
+        </div>
+
+    </div>
+</section>
+
+<!-- newsleter modal -->
+
+<div id="newsletter_signup" class="reveal-modal tiny radius dark_modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <a class="close-reveal-modal" aria-label="Close">×</a>
+    <h2 id="modalTitle">Sign up for the Scylla newsletter</h2>
+    <div id="mc_embed_signup">
+        <form action="//cloudius-systems.us10.list-manage.com/subscribe/post?u=df8bb543c68230d5f7b4dcf78&amp;id=9a4589f144" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="">
+            <div id="mc_embed_signup_scroll">
+
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-EMAIL">Email</label></div>
+                        <div class="small-9 columns"><input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL"></div>
+                    </div>
+                </div>
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-FNAME">First Name </label></div>
+                        <div class="small-9 columns"><input type="text" value="" name="FNAME" class="" id="mce-FNAME"></div>
+                    </div>
+                </div>
+                <div class="mc-field-group">
+                    <div class="row collapse">
+                        <div class="small-3 columns"><label for="mce-LNAME">Last Name </label></div>
+                        <div class="small-9 columns"><input type="text" value="" name="LNAME" class="" id="mce-LNAME"></div>
+                    </div>
+                </div>
+                <div id="mce-responses" class="clear">
+                    <div class="response" id="mce-error-response" style="display:none"></div>
+                    <div class="response" id="mce-success-response" style="display:none"></div>
+                </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <div style="position: absolute; left: -5000px;"><input type="text" name="b_df8bb543c68230d5f7b4dcf78_9a4589f144" tabindex="-1" value=""></div>
+                <div class="clear"><input type="submit" class="button" value="Sign up" name="subscribe" id="mc-embedded-subscribe"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- end newsleter modal -->
+
+
+
+<!-- footer.html -->
+<footer id="footer">
+    <div class="footer-top">
+        <a class="logo" href="https://www.scylladb.com"><img src="_static/img/logo-scylla-horizontal-RGB.svg" alt=""></a>
+        <div class="footer-links">
+            <a class="link" href="https://docs.scylladb.com">Docs</a>
+            <a class="link" href="https://www.scylladb.com/company/contact-us/">Contact Us</a>
+            <a class="link" href="https://www.scylladb.com/company/">About Us</a>
+          <div class="scylla-dropdown">
+    <a href="#" data-options="align:top" data-dropdown="drop-contribute" class="scylla-dropdown__button">
+        Contribute 
+        <i class="fa fa-github" aria-hidden="true"></i>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+    </a>
+    <ul id="drop-contribute" class="f-dropdown scylla-dropdown__content" data-dropdown-content>
+        <li><a href="https://github.com/scylladb/scylla-operator/issues/new?title=Issue in page Node operations using Scylla Operator&&body=I%20would%20like%20to%20report%20an%20issue%20in%20page%20https://operator.docs.scylladb.com/v1.2/node_operations%0A%0A%23%23%23%20Problem%0A%0A%23%23%23%20%20Suggest%20a%20fix" target="_blank">Report a doc issue <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+        <li><a href="https://docs.scylladb.com/contribute/" target="_blank">Learn how to contribute <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+    </ul>
+</div>
+        </div>
+        <div class="footer-actions">
+            <a class="link-icon" href="https://github.com/ScyllaDB" target="_blank">
+                <span class="icon-github2"></span></a>
+            <a class="link-icon" href="https://twitter.com/ScyllaDB" target="_blank">
+                <span class="icon-twitter"></span></a>
+            <a class="link-icon" href="https://www.linkedin.com/company/scylladb"  target="_blank">
+                <span class="icon-linkedin2"></span></a>
+            <a class="link-icon" href="https://www.facebook.com/scylladb/" target="_blank">
+                <span class="icon-facebook"></span></a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="footer-info">
+            <div class="footer-copyright">
+                &#169; 2021, ScyllaDB. All rights reserved.
+            </div>
+            <div class="footer-last-updated">
+                Last updated on 13 July 2021.
+            </div>
+            <div class="footer-version">
+                Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+                &amp; <a href="https://sphinx-theme.scylladb.com">ScyllaDB Theme 0.1.25</a>
+            </div>
+        </div>
+        <div class="footer-links">
+        </div>
+    </div>
+</footer>
+<!-- end footer.html -->
+
+<!-- bodyscripts.html -->
+<!-- at the end of the BODY --> 
+<script src="_static/js/vendor/jquery.js"></script>
+<script src="_static/js/vendor/jquery.cookie.min.js"></script>
+<script src="_static/expertrec.js"></script>
+<script src="_static/js/foundation/foundation.js"></script>
+<script src="_static/js/foundation/foundation.topbar.js"></script>
+<script src="_static/js/foundation/foundation.dropdown.js"></script>
+<script src="_static/app.js"></script>
+<script>
+    $(document).foundation();
+</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T8P2JP"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+  <!-- end bodyscripts.html -->
+</body>
+</html>
